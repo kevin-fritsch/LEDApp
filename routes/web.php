@@ -14,5 +14,18 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('home');
+})->name('home');
+
+Route::get('/led', 'LEDController@index')->name('led');
+Route::get('/voiceevent', 'VoiceEventController@index')->name('voiceevent');
+
+Route::get('/led/create', function() {
+    return view('led.create');
+})->name('createledget');
+Route::get('/voiceevent/create', function() {
+    return view('voiceevent.create');
+})->name('createvoiceeventget');
+
+Route::post('/led/create', 'LEDController@create')->name('createledpost');
+Route::post('/voiceevent/create', 'VoiceEventController@create')->name('createvoiceeventpost');
