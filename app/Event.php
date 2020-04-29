@@ -9,12 +9,12 @@ class Event extends Model
     protected $table = "events";
 
     protected $fillable = [
-        "duration", "ledStatus"
+        "name", "duration", "ledStatus"
     ];
 
-    public function voiceEvent()
+    public function voiceEvents()
     {
-        return $this->belongsTo('App\VoiceEvent');
+        return $this->belongsToMany('App\VoiceEvent');
     }
 
     public function led()

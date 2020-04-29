@@ -39,5 +39,6 @@ class LEDController extends Controller
     {
         $led = LED::find($request->id);
         $led->delete();
+        return $this->index();
     }
 }

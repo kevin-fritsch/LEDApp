@@ -14,7 +14,7 @@ class VoiceEvent extends Model
 
     public function events() 
     {
-        return $this->hasMany('App\Event');
+        return $this->belongsToMany('App\Event');
     }
 
 }

@@ -39,5 +39,7 @@ class VoiceEventController extends Controller
         $voiceevent = VoiceEvent::find($request->id);
 
         $voiceevent->delete();
+
+        return $this->index();
     }
 }

@@ -17,10 +17,8 @@ class CreateEventsTable extends Migration
             $table->id();
             $table->integer('duration');
             $table->boolean('ledStatus');
-            $table->unsignedBigInteger('voiceevent_id');
             $table->unsignedBigInteger('led_id');
             $table->timestamps();
-            $table->foreign('voiceevent_id')->references('id')->on('voiceevents')->onDelete('cascade');
             $table->foreign('led_id')->references('id')->on('leds')->onDelete('cascade');
         });
     }
