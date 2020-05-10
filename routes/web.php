@@ -41,4 +41,6 @@ Route::post('/voiceevent/{voiceevent}/edit', 'VoiceEventController@edit')->name(
 Route::post('/led/delete', 'LEDController@delete')->name('deleteledpost');
 Route::post('/voiceevent/delete', 'VoiceEventController@delete')->name('deletevoiceeventpost');
 
+Route::post('/event/create', 'EventController@create');
+
 Route::post('/getAllEvents', 'EventController@getAll');

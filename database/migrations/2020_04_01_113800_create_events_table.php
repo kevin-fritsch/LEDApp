@@ -15,6 +15,7 @@ class CreateEventsTable extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->integer('duration');
             $table->boolean('ledStatus');
             $table->unsignedBigInteger('led_id');

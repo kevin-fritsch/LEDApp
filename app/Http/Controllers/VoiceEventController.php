@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\VoiceEvent;
+use App\Event;
 
 class VoiceEventController extends Controller
 {
@@ -17,6 +18,13 @@ class VoiceEventController extends Controller
         $voiceevent = new VoiceEvent;
 
         $voiceevent->voiceCommand = $request->voiceCommand;
+
+        foreach($request->eventids as $eventid) {
+
+            $event = Event::find($eventid);
+            $voiceevent->events()->attach($event);
+
+        }
 
         $voiceevent->save();
 

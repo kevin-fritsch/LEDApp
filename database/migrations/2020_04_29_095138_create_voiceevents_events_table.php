@@ -13,10 +13,10 @@ class CreateVoiceeventsEventsTable extends Migration
      */
     public function up()
     {
-        Schema::create('voiceevents_events', function (Blueprint $table) {
-            $table->integer('voiceevent_id')->unsigned();
-            $table->integer('event_id')->unsigned();
-            $table->foreign('voiceevent_id')->references('id')->on('voiceevents')->onDelete('cascade');
+        Schema::create('event_voice_event', function (Blueprint $table) {
+            $table->unsignedBigInteger('voice_event_id');
+            $table->unsignedBigInteger('event_id');
+            $table->foreign('voice_event_id')->references('id')->on('voiceevents')->onDelete('cascade');
             $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade');
         });
     }
@@ -28,6 +28,6 @@ class CreateVoiceeventsEventsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('voiceevents_events');
+        Schema::dropIfExists('event_voice_event');
     }
 }

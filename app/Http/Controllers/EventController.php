@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Event;
+use App\LED;
 
 class EventController extends Controller
 {
@@ -14,6 +15,17 @@ class EventController extends Controller
 
     public function create(Request $request)
     {
+        $event = new Event;
+
+        $event->name = $request->eventName;
+        $event->duration = $request->duration;
+        $event->ledStatus = $request->ledStatus;
+
+        $led = LED::find($request->led);
+
+        $event->led()->associate($led);
+
+        $event->save();
 
     }
 
