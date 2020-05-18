@@ -50,4 +50,8 @@ class VoiceEventController extends Controller
 
         return $this->index();
     }
+
+    public function getAll() {
+        return response()->json(array('voiceevents' => VoiceEvent::all()), 200);
+    }
 }
