@@ -19,10 +19,17 @@ class VoiceEventController extends Controller
 
         $voiceevent->voiceCommand = $request->voiceCommand;
 
+        $voiceevent->save();
+
+        echo 1;
+        var_dump($request->eventids);
+        echo 2;
+
         foreach($request->eventids as $eventid) {
 
-            $event = Event::find($eventid);
-            $voiceevent->events()->attach($event);
+            $voiceevent->events()->attach($eventid);
+
+            $voiceevent->save();
 
         }
 
