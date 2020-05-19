@@ -23,7 +23,7 @@ class VoiceEventController extends Controller
 
         echo 1;
         var_dump($request->eventids);
-        echo 2;
+        echo 3;
 
         foreach($request->eventids as $eventid) {
 
