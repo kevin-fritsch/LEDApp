@@ -21,10 +21,6 @@ class VoiceEventController extends Controller
 
         $voiceevent->save();
 
-        echo 1;
-        var_dump($request->eventids);
-        echo 3;
-
         foreach($request->eventids as $eventid) {
 
             $voiceevent->events()->attach($eventid);

@@ -46,3 +46,5 @@ Route::post('/event/create', 'EventController@create');
 Route::post('/getAllEvents', 'EventController@getAll');
 
 Route::post('/getAllVoiceEvents', 'VoiceEventController@getAll');
+
+Route::post('/addToQueue', 'VoiceEventQueueController@addToQueue');

@@ -5,19 +5,26 @@
     <div class="container">
 
         <div class="app">
-            <h3>Add New Note</h3>
-            <div class="input-single">
-                <textarea id="note-textarea" placeholder="Create a new note by typing or using voice recognition." rows="6"></textarea>
+            <div class="start-button">
+                <button id="start-record-btn" title="Start">Start</button>
             </div>
-            <button id="start-record-btn" title="Start Recording">Start Recognition</button>
-            <button id="pause-record-btn" title="Pause Recording">Pause Recognition</button>
+            <div class="input-single">
+                <textarea id="note-textarea" rows="1"></textarea>
+            </div>
+            
+            <!--<button id="pause-record-btn" title="Pause Recording">Pause Recognition</button>
             <button id="save-note-btn" title="Save Note">Save Note</button>
-            <p id="recording-instructions">Press the <strong>Start Recognition</strong> button and allow access.</p>
+            <p id="recording-instructions">Press the <strong>Start Recognition</strong> button and allow access.</p>-->
 
+            <div class="allVoiceEvents">
+                <ul id="voiceevents">
+                </ul>
+            </div>
         </div>
         <!-- Auflistung aller VoiceEvents in einer Warteschlange -->
         <!-- Bei Button klick soll ein Voiceeingabe erfolgen und entweder bei einem gefundenem Event oder nach ein paar Sekunden stoppen -->
         <!-- Websockets, AJAX Abfrage und Aufruf -->
+
 
 
     </div>
@@ -33,6 +40,10 @@
             }
         });
 
+        $("#note-textarea").on("change keyup paste", function() {
+            
+        })
+
         function getAllVoiceEvents() {
 
             $.ajax({
@@ -40,15 +51,24 @@
                 url: "/getAllVoiceEvents",
                 data: '_token = <?php echo csrf_token() ?>',
                 success: function(data) {
-
+                    let voiceevents = data.voiceevents
+                    voiceevents.forEach(voiceevent => $("#voiceevents").append("<li>" + voiceevent.voiceCommand + "<button type='button' onclick='addToQueue(" + voiceevent.id + ")'>Add to queue</button></li>"))
                 }
             });
 
         }
 
-        function getVoiceEventQueue() {
-
+        function addToQueue(voiceeventid) {
+            let data = []
+            data["voiceevent_id"] = voiceeventid
+            $.post("/addToQueue", data)
         }
+
+        function getVoiceEventQueue() {
+            
+        }
+
+        getAllVoiceEvents()
 
     </script>
 
