@@ -5,13 +5,25 @@
     <div class="container">
 
         <div class="app">
+            <div class="table-responsive">
+                <table id="queue" class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">VoiceEvent</th>
+                            <td scope="col">Momentaner Stand</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
             <div class="start-button">
                 <button id="start-record-btn" title="Start">Start</button>
             </div>
             <div class="input-single">
                 <textarea id="note-textarea" rows="1"></textarea>
             </div>
-            
+
             <!--<button id="pause-record-btn" title="Pause Recording">Pause Recognition</button>
             <button id="save-note-btn" title="Save Note">Save Note</button>
             <p id="recording-instructions">Press the <strong>Start Recognition</strong> button and allow access.</p>-->
@@ -41,7 +53,7 @@
         });
 
         $("#note-textarea").on("change keyup paste", function() {
-            
+
         })
 
         function getAllVoiceEvents() {
@@ -65,10 +77,43 @@
         }
 
         function getVoiceEventQueue() {
-            
+            $.ajax({
+                type: 'POST',
+                url: '/getVoiceEventQueue',
+                data: '_token = <?php echo csrf_token() ?>',
+                success: function(data) {
+                    let voiceevents = data
+                    voiceevents.forEach(function (voiceevent) {
+                            var appendTo
+                            if($("#queue tr:last").length) {
+                                appendTo = $("#queue tr:last")
+                            } else {
+                                appendTo = $("#queue tbody")
+                            }
+                            var event = getVoiceEvent(voiceevent.voiceevent_id)
+                            appendTo.append("<tr><td>" + event.voiceCommand + "</td><td>" + voiceevent.current + "</td></tr>")
+                    })
+                }
+            })
+        }
+
+        function getVoiceEvent(id) {
+            var event = null
+            $.ajax({
+                type: 'POST',
+                url: '/getVoiceEvent',
+                data: { '_token': '<?php echo csrf_token() ?>',
+                        'id': id
+                        },
+                success: function (voiceevent) {
+                    event = voiceevent
+                }
+            })
+            return event
         }
 
         getAllVoiceEvents()
+        getVoiceEventQueue()
 
     </script>
 

@@ -7,7 +7,7 @@ use App\VoiceEventQueue;
 
 class VoiceEventQueueController extends Controller
 {
-    
+
     function addToQueue(Request $request) {
 
         $queue = new VoiceEventQueue;
@@ -18,6 +18,10 @@ class VoiceEventQueueController extends Controller
 
         $queue->save();
 
+    }
+
+    function getAll() {
+        return response()->json(array('voiceevents' => VoiceEventQueue::all()), 200);
     }
 
 }

@@ -57,4 +57,8 @@ class VoiceEventController extends Controller
     public function getAll() {
         return response()->json(array('voiceevents' => VoiceEvent::all()), 200);
     }
+
+    public function getVoiceEvent(Request $request) {
+        return response()->json(VoiceEvent::find($request->id));
+    }
 }
