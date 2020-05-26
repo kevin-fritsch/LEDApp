@@ -83,16 +83,17 @@
                 data: '_token = <?php echo csrf_token() ?>',
                 success: function(data) {
                     let voiceevents = data
-                    voiceevents.forEach(function (voiceevent) {
-                            var appendTo
-                            if($("#queue tr:last").length) {
-                                appendTo = $("#queue tr:last")
-                            } else {
-                                appendTo = $("#queue tbody")
-                            }
-                            var event = getVoiceEvent(voiceevent.voiceevent_id)
-                            appendTo.append("<tr><td>" + event.voiceCommand + "</td><td>" + voiceevent.current + "</td></tr>")
-                    })
+                    voiceevents.forEach(appendToTable)
+                    function appendToTable(voiceevent) {
+                        var appendTo
+                        if($("#queue tr:last").length) {
+                            appendTo = $("#queue tr:last")
+                        } else {
+                            appendTo = $("#queue tbody")
+                        }
+                        var event = getVoiceEvent(voiceevent.voiceevent_id)
+                        appendTo.append("<tr><td>" + event.voiceCommand + "</td><td>" + voiceevent.current + "</td></tr>")
+                    }
                 }
             })
         }
