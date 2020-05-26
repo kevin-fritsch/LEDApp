@@ -13,7 +13,7 @@ class CreateVoiceEventQueueTable extends Migration
      */
     public function up()
     {
-        Schema::create('voice_event_queue', function (Blueprint $table) {
+        Schema::create('voice_event_queues', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('voiceevent_id');
             $table->string('current', 500);
@@ -28,6 +28,6 @@ class CreateVoiceEventQueueTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('voice_event_queue');
+        Schema::dropIfExists('voice_event_queues');
     }
 }
