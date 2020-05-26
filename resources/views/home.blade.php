@@ -82,7 +82,7 @@
                 url: '/getVoiceEventQueue',
                 data: '_token = <?php echo csrf_token() ?>',
                 success: function(data) {
-                    let voiceevents = data
+                    let voiceevents = data.voiceevents
                     voiceevents.forEach(appendToTable)
                     function appendToTable(voiceevent) {
                         var appendTo
