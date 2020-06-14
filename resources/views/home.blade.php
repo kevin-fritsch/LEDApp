@@ -71,9 +71,19 @@
         }
 
         function addToQueue(voiceeventid) {
-            let data = []
-            data["voiceevent_id"] = voiceeventid
-            $.post("/addToQueue", data)
+            $.ajax({
+                type: 'POST',
+                url: '/addToQueue',
+                data: {
+                    '_token':  '<?php echo csrf_token() ?>',
+                    'voiceevent_id': voiceeventid
+                },
+                success: function () {
+                    $("#queue tbody").html("");
+                    getVoiceEventQueue()
+                }
+            })
+
         }
 
         function getVoiceEventQueue() {
@@ -87,19 +97,26 @@
                     function appendToTable(voiceevent) {
                         var appendTo
                         if($("#queue tr:last").length) {
-                            appendTo = $("#queue tr:last")
+                            appendTo = $("#queue tbody")
                         } else {
                             appendTo = $("#queue tbody")
                         }
-                        var event = getVoiceEvent(voiceevent.voiceevent_id)
-                        appendTo.append("<tr><td>" + event.voiceCommand + "</td><td>" + voiceevent.current + "</td></tr>")
+                        $.ajax({
+                            type: 'POST',
+                            url: '/getVoiceEvent',
+                            data: { '_token': '<?php echo csrf_token() ?>',
+                                'id': voiceevent.voiceevent_id
+                            },
+                            success: function (event) {
+                                appendTo.append("<tr><td>" + event.voiceCommand + "</td><td>" + voiceevent.current + "</td></tr>")
+                            }
+                        })
                     }
                 }
             })
         }
 
         function getVoiceEvent(id) {
-            var event = null
             $.ajax({
                 type: 'POST',
                 url: '/getVoiceEvent',
@@ -107,10 +124,10 @@
                         'id': id
                         },
                 success: function (voiceevent) {
-                    event = voiceevent
+                    console.log(voiceevent)
+                    return voiceevent
                 }
             })
-            return event
         }
 
         getAllVoiceEvents()

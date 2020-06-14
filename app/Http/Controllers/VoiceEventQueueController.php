@@ -12,7 +12,7 @@ class VoiceEventQueueController extends Controller
 
         $queue = new VoiceEventQueue;
 
-        $queue->voiceevent_id = $request->voiceevent_id;
+        $queue->voiceevent_id = $request["voiceevent_id"];
 
         $queue->current = "warte";
 
