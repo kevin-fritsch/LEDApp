@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\QueueWork;
 use Illuminate\Http\Request;
 use App\VoiceEventQueue;
 
@@ -17,6 +18,8 @@ class VoiceEventQueueController extends Controller
         $queue->current = "warte";
 
         $queue->save();
+
+        event(new QueueWork($queue->current, $queue->id));
 
     }
 

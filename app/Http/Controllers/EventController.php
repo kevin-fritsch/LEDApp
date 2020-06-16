@@ -10,7 +10,7 @@ class EventController extends Controller
 {
     public function index()
     {
-        
+
     }
 
     public function create(Request $request)
@@ -18,7 +18,7 @@ class EventController extends Controller
         $event = new Event;
 
         $event->name = $request->eventName;
-        $event->duration = $request->duration;
+        $event->duration = $request->get("duration");
         $event->ledStatus = $request->ledStatus;
 
         $led = LED::find($request->led);

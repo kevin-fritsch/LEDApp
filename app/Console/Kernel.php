@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Events\QueueWork;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\VoiceEventQueue;
@@ -31,23 +32,29 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             if(sizeof(VoiceEventQueue::all()) > 0) {
                 $voiceeventqueueelement = VoiceEventQueue::first();
+                $voiceeventqueueelement->current = "starte";
+                $voiceeventqueueelement->save();
+                event(new QueueWork($voiceeventqueueelement->current, $voiceeventqueueelement->id));
                 $voiceevent = VoiceEvent::find($voiceeventqueueelement->voiceevent_id);
                 $events = $voiceevent->events()->get();
                 foreach($events as $event) {
-                    $led = $event->led();
+                    $voiceeventqueueelement->current = $event->name;
+                    $voiceeventqueueelement->save();
+                    event(new QueueWork($voiceeventqueueelement->current, $voiceeventqueueelement->id));
+                    $led = $event->led()->first();
                     $duration = $event->duration;
                     $status = $event->ledStatus;
                     $gpio = $led->gpio;
-                    exec("gpio -1 mode $gpio out");
-                    exec("gpio -1 write $gpio $status");
-                    sleep($duration);
+                    if($status == 1) {
+                        exec("python3 /home/pi/LEDApp/on.py $gpio $duration");
+                    } else {
+                        sleep($duration);
+                    }
                 }
-                foreach ($events as $event) {
-                    $led = $event->led();
-                    $gpio = $led->gpio;
-                    exec("gpio -1 mode $gpio out");
-                    exec("gpio -1 write $gpio 0");
-                }
+                $voiceeventqueueelement->current = "fertig";
+                $voiceeventqueueelement->save();
+                event(new QueueWork($voiceeventqueueelement->current, $voiceeventqueueelement->id));
+                $voiceeventqueueelement->delete();
             }
         })->everyMinute();
     }

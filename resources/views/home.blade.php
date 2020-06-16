@@ -46,6 +46,20 @@
 
     <script>
 
+        Echo.channel("queue").listen("QueueWork", (event) => {
+            console.log(event)
+            if(event.current === "fertig") {
+                $("#queue tbody tr#" + event.id).remove();
+            } else if(event.current === "warte") {
+                if($("#queue tbody tr#" + event.id)) {
+                    $("#queue tbody").html("");
+                    getVoiceEventQueue()
+                }
+            } else {
+                $("#queue tbody tr#" + event.id + " td.current").html(event.current);
+            }
+        })
+
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -80,7 +94,7 @@
                 },
                 success: function () {
                     $("#queue tbody").html("");
-                    getVoiceEventQueue()
+                    //getVoiceEventQueue()
                 }
             })
 
@@ -108,7 +122,7 @@
                                 'id': voiceevent.voiceevent_id
                             },
                             success: function (event) {
-                                appendTo.append("<tr><td>" + event.voiceCommand + "</td><td>" + voiceevent.current + "</td></tr>")
+                                appendTo.append("<tr id=" + voiceevent.id + " ><td>" + event.voiceCommand + "</td><td class='current'>" + voiceevent.current + "</td></tr>")
                             }
                         })
                     }
